@@ -47,6 +47,7 @@ export default function App() {
         <Tab.Screen
           name="Stats"
           component={StatsScreen}
+          options={{ headerShown: false }}
           // options={{
           //   tabBarIcon: ({ color, size }) => (
           //     <StatsIcon name="stats" color={color} size={size} />
