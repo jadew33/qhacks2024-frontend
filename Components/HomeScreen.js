@@ -289,6 +289,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <MapView style={styles.map}></MapView>
       {/* <MapView
         provider={PROVIDER_GOOGLE}
         ref={mapRef}
