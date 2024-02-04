@@ -24,6 +24,8 @@ import CustomizeIconActive from "./assets/customize-active.png";
 export default function App() {
   const [data, setData] = useState(null);
   const [coins, setCoins] = useState(100);
+  const [closet, setCloset] = useState([]);
+  const [avatar, setAvatar] = useState(require("./assets/mascot-orig.png"));
 
   // useEffect(() => {
   //   fetch("http://192.168.2.34/user", {
@@ -131,7 +133,7 @@ export default function App() {
           {() => <StatsScreen data={data} />}
         </Tab.Screen>
         <Tab.Screen
-          name="Customize"
+          name="Avatar"
           options={{
             headerShown: false,
             tabBarIcon: ({ focused, size }) => (
@@ -157,12 +159,22 @@ export default function App() {
                   marginTop: -10,
                 }}
               >
-                Customize
+                Avatar
               </Text>
             ),
           }}
         >
-          {() => <CustomizeScreen data={data} coins={coins} />}
+          {() => (
+            <CustomizeScreen
+              data={data}
+              coins={coins}
+              closet={closet}
+              setCloset={setCloset}
+              setCoins={coins}
+              avatar={avatar}
+              setAvatar={setAvatar}
+            />
+          )}
         </Tab.Screen>
         <Tab.Screen
           name="Friends"
