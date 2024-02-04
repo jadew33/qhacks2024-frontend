@@ -229,9 +229,11 @@ import { shareAsync } from "expo-sharing";
 //   },
 // ];
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, data }) => {
   const [location, setLocation] = useState();
   const [count, setCount] = useState(0);
+
+  console.log(data);
 
   const [draggableMarkerCoord, setDraggableMarkerCoord] = useState({
     longitude: 148.11,
@@ -289,7 +291,14 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map}></MapView>
+      <Text>Hello, Kale</Text>
+      <View style={styles.circle}>
+        <MapView style={styles.map}></MapView>
+      </View>
+      <Text>You are 35% done with your classes today!</Text>
+      <View>
+        <Text>Stats view here</Text>
+      </View>
       {/* <MapView
         provider={PROVIDER_GOOGLE}
         ref={mapRef}
@@ -343,9 +352,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  circle: {
+    width: 300, // or whatever size you want
+    height: 300, // should match width for a perfect circle
+    borderRadius: 150, // half of your width and height
+    overflow: "hidden", // to ensure the corners are not visible
+  },
   map: {
-    width: "90%",
-    height: "30%",
+    // width: "90%",
+    // height: "30%",
+    ...StyleSheet.absoluteFillObject, // to ensure the map takes the full space of the parent View
   },
   mapOverlay: {
     position: "absolute",

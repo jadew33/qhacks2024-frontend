@@ -21,12 +21,21 @@ import StatsIcon from "./assets/stats.svg";
 import CustomizeIcon from "./assets/friends.svg";
 
 export default function App() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/users")
+      .then((response) => response.json())
+      .then((data) => setData(data))
+      .catch((error) => console.error("Error:", error));
+  }, []);
+
   return (
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen
           name="Home"
-          component={HomeScreen}
+          component={() => <HomeScreen data={data} />}
           // options={{
           //   tabBarIcon: ({ color, size }) => (
           //     <HomeIcon name="home" color={color} size={size} />
@@ -36,7 +45,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Calendar"
-          component={CalendarScreen}
+          component={() => <CalendarScreen data={data} />}
           // options={{
           //   tabBarIcon: ({ color, size }) => (
           //     <CalendarIcon name="calendar" color={color} size={size} />
@@ -46,7 +55,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Stats"
-          component={StatsScreen}
+          component={() => <StatsScreen data={data} />}
           // options={{
           //   tabBarIcon: ({ color, size }) => (
           //     <StatsIcon name="stats" color={color} size={size} />
@@ -56,7 +65,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Customize"
-          component={CustomizeScreen}
+          component={() => <CustomizeScreen data={data} />}
           // options={{
           //   tabBarIcon: ({ color, size }) => (
           //     <CustomizeIcon name="customize" color={color} size={size} />
@@ -65,8 +74,8 @@ export default function App() {
           // }
         />
         <Tab.Screen
-          name="Friehhhnds"
-          component={FriendsScreen}
+          name="Friends"
+          component={() => <FriendsScreen data={data} />}
           // options={{
           //   tabBarIcon: ({ color, size }) => (
           //     <FriendsIcon name="friends" color={color} size={size} />
