@@ -46,6 +46,7 @@ export default function App() {
         <Tab.Screen
           name="Calendar"
           component={() => <CalendarScreen data={data} />}
+          options={{ headerShown: false }}
           // options={{
           //   tabBarIcon: ({ color, size }) => (
           //     <CalendarIcon name="calendar" color={color} size={size} />
@@ -67,6 +68,7 @@ export default function App() {
         <Tab.Screen
           name="Customize"
           component={() => <CustomizeScreen data={data} />}
+          options={{ headerShown: false }}
           // options={{
           //   tabBarIcon: ({ color, size }) => (
           //     <CustomizeIcon name="customize" color={color} size={size} />
@@ -77,6 +79,8 @@ export default function App() {
         <Tab.Screen
           name="Friends"
           component={() => <FriendsScreen data={data} />}
+         
+          options={{ headerShown: false }}
           // options={{
           //   tabBarIcon: ({ color, size }) => (
           //     <FriendsIcon name="friends" color={color} size={size} />
