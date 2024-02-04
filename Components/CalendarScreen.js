@@ -9,7 +9,7 @@ const CalendarScreen = ({ navigation }) => {
 
   const schedule = [
     {
-      date: "2024-05-20",
+      date: "2024-02-05",
       dayOfWeek: "Monday",
       classes: [
         {
@@ -25,7 +25,7 @@ const CalendarScreen = ({ navigation }) => {
       ],
     },
     {
-      date: "2024-05-21",
+      date: "2024-02-06",
       dayOfWeek: "Tuesday",
       classes: [
         {
@@ -41,7 +41,7 @@ const CalendarScreen = ({ navigation }) => {
       ],
     },
     {
-      date: "2024-05-22",
+      date: "2024-02-07",
       dayOfWeek: "Wednesday",
       classes: [
         {
@@ -57,7 +57,7 @@ const CalendarScreen = ({ navigation }) => {
       ],
     },
     {
-      date: "2024-05-23",
+      date: "2024-02-08",
       dayOfWeek: "Thursday",
       classes: [
         {
@@ -73,7 +73,7 @@ const CalendarScreen = ({ navigation }) => {
       ],
     },
     {
-      date: "2024-05-24",
+      date: "2024-02-09",
       dayOfWeek: "Friday",
       classes: [
         {
