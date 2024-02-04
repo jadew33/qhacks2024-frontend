@@ -13,7 +13,7 @@ const HomeScreen = ({ navigation, data, coins }) => {
     longitudeDelta: 0.0001, // smaller value for more zoom
   });
 
-  console.log(data);
+  const p = 0.8;
 
   useEffect(() => {
     const getLocation = async () => {
@@ -90,6 +90,11 @@ const HomeScreen = ({ navigation, data, coins }) => {
         <View style={styles.streakCircle} />
         <View style={styles.streakCircle} />
       </View>
+      <Text style={styles.goalText}>
+        {p > 0.7
+          ? "You've been attending more classes than usual, keep it up!"
+          : "We've noticed a decline in your attendance, consider reaching out to Queen's Student Accessibility Services for support."}
+      </Text>
       <StatusBar style="auto" />
     </View>
   );
