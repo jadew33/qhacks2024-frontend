@@ -9,8 +9,6 @@ import {
 import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import StatsChart from "./StatsChart";
 import StatsRing from "./StatsRing";
-import RightArrow from "../assets/rightarrow.svg";
-import leftArrow from "../assets/leftarrow.svg";
 
 const StatsScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
@@ -20,6 +18,7 @@ const StatsScreen = ({ navigation }) => {
   });
 
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentData, setCurrentData] = useState(null);
 
   const calculateChartData = (date) => {
     // Logic to calculate chart data based on the date
@@ -49,15 +48,26 @@ const StatsScreen = ({ navigation }) => {
     setCurrentDate(newDate);
   };
 
-
   return (
     <View style={[styles.container]}>
       <View>
-      <Text style={{paddingTop:40, fontSize:24, fontFamily:'BeVietnamPro_600SemiBold'}}>Statistics</Text></View>
+        <Text
+          style={{
+            paddingTop: 40,
+            fontSize: 24,
+            fontFamily: "BeVietnamPro_600SemiBold",
+          }}
+        >
+          Statistics
+        </Text>
+      </View>
       <View style={styles.innerContainer}>
         <TouchableOpacity onPress={() => handleDateChange("prev")}>
           <View>
-          <Image source={require('../assets/leftarrow.png')} style={styles.buttonImage} />
+            <Image
+              source={require("../assets/leftarrow.png")}
+              style={styles.buttonImage}
+            />
           </View>
         </TouchableOpacity>
         <Text style={{ fontFamily: "AzeretMono_400Regular" }}>
@@ -65,18 +75,21 @@ const StatsScreen = ({ navigation }) => {
         </Text>
         <TouchableOpacity onPress={() => handleDateChange("next")}>
           <View>
-          <Image source={require('../assets/rightarrow.png')} style={styles.buttonImage} />
+            <Image
+              source={require("../assets/rightarrow.png")}
+              style={styles.buttonImage}
+            />
           </View>
         </TouchableOpacity>
       </View>
       <View style={styles.statscontainer}>
         <View style={styles.statscharts}>
-          <StatsChart currentDate={currentDate}/>
+          <StatsChart currentDate={currentDate} />
         </View>
         <Text style={styles.h3}>You go to most classes on Tuesday's</Text>
         {/* <View style={[styles.stats, { marginTop: 20 }]} /> */}
-        <View style={[styles.statscharts,{ marginTop: 20 }]}>
-          <StatsRing currentDate={currentDate}/>
+        <View style={[styles.statscharts, { marginTop: 20 }]}>
+          <StatsRing currentDate={currentDate} />
         </View>
       </View>
     </View>
@@ -88,7 +101,7 @@ const formatDateRange = (date) => {
   startDate.setDate(
     date.getDate() - date.getDay() + (date.getDay() === 0 ? -6 : 1)
   ); // Set to Monday of the current week
-  
+
   const endDate = new Date(startDate);
   endDate.setDate(startDate.getDate() + 4); // Set to Friday of the current week
 
@@ -123,7 +136,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 10,
     paddingBottom: 10,
-    alignContent:'center'
+    alignContent: "center",
     // justifyContent: "center",
   },
   statscharts: {
@@ -137,7 +150,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 4,
-    paddingTop:10
+    paddingTop: 10,
   },
   stats: {
     flex: 0.4,
