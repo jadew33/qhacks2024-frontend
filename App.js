@@ -13,7 +13,7 @@ import CustomizeScreen from "./Components/CustomizeScreen";
 import StatsScreen from "./Components/StatsScreen";
 import FriendsScreen from "./Components/FriendsScreen";
 import CalendarScreen from "./Components/CalendarScreen";
-
+import PermissionScreen from "./Components/PermissionScreen"
 import CalendarIcon from "./assets/calendar.svg";
 import FriendsIcon from "./assets/friends.svg";
 import HomeIcon from "./assets/home.svg";
@@ -81,6 +81,16 @@ export default function App() {
           component={() => <FriendsScreen data={data} />}
          
           options={{ headerShown: false }}
+          // options={{
+          //   tabBarIcon: ({ color, size }) => (
+          //     <FriendsIcon name="friends" color={color} size={size} />
+          //   ),
+          // }
+          // }
+        />
+        <Tab.Screen
+          name="permission"
+          component={PermissionScreen}
           // options={{
           //   tabBarIcon: ({ color, size }) => (
           //     <FriendsIcon name="friends" color={color} size={size} />
