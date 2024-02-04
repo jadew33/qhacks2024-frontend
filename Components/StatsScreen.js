@@ -1,24 +1,45 @@
 const { Text } = require("react-native");
-import React, { useState } from "react";
-import { AzeretMono_400Regular } from "@expo-google-fonts/azeret-mono";
-import {
-  useFonts,
-  BeVietnamPro_600SemiBold,
-  BeVietnamPro_400Regular,
-} from "@expo-google-fonts/be-vietnam-pro";
+import React, { useEffect, useState } from "react";
+// import { AzeretMono_400Regular } from "@expo-google-fonts/azeret-mono";
+// import {
+//   useFonts,
+//   BeVietnamPro_600SemiBold,
+//   BeVietnamPro_400Regular,
+// } from "@expo-google-fonts/be-vietnam-pro";
 import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import StatsChart from "./StatsChart";
 import StatsRing from "./StatsRing";
 
+// const StatsScreen = ({ navigation }) => {
+//   let [fontsLoaded] = useFonts({
+//     BeVietnamPro_600SemiBold,
+//     BeVietnamPro_400Regular,
+//     // AzeretMono_400Regular,
+//   });
 const StatsScreen = ({ navigation }) => {
-  let [fontsLoaded] = useFonts({
-    BeVietnamPro_600SemiBold,
-    BeVietnamPro_400Regular,
-    AzeretMono_400Regular,
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [systemDate, setSystemDate] = useState(new Date());
+  const [currentData, setCurrentData] = useState({
+    labels: ["M", "T", "W", "T", "F"],
+    datasets: [
+      {
+        data: [
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+        ],
+      },
+    ],
   });
 
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [currentData, setCurrentData] = useState(null);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSystemDate(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const calculateChartData = (date) => {
     // Logic to calculate chart data based on the date
@@ -40,12 +61,34 @@ const StatsScreen = ({ navigation }) => {
     return data;
   };
 
+  useEffect(() => {
+    setCurrentData(calculateChartData(currentDate));
+  }, [currentDate]);
+
+  const getDayWithHighestValue = () => {
+    const data = currentData.datasets[0].data;
+    const max = Math.max(...data);
+    const index = data.indexOf(max);
+    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    return daysOfWeek[index];
+  };
+
   const handleDateChange = (direction) => {
     const newDate = new Date(currentDate);
     direction === "next"
       ? newDate.setDate(currentDate.getDate() + 7)
       : newDate.setDate(currentDate.getDate() - 7);
-    setCurrentDate(newDate);
+    if (newDate <= systemDate) {
+      setCurrentDate(newDate);
+    }
+  };
+
+  const isSameDay = (date1, date2) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
   };
 
   return (
@@ -55,7 +98,8 @@ const StatsScreen = ({ navigation }) => {
           style={{
             paddingTop: 40,
             fontSize: 24,
-            fontFamily: "BeVietnamPro_600SemiBold",
+            // fontFamily: "BeVietnamPro_600SemiBold",
+            fontWeight: "bold",
           }}
         >
           Statistics
@@ -70,27 +114,41 @@ const StatsScreen = ({ navigation }) => {
             />
           </View>
         </TouchableOpacity>
-        <Text style={{ fontFamily: "AzeretMono_400Regular" }}>
-          {formatDateRange(currentDate)}
-        </Text>
-        <TouchableOpacity onPress={() => handleDateChange("next")}>
+        {/* <Text style={{ fontFamily: "AzeretMono_400Regular" }}> */}
+        <Text>{formatDateRange(currentDate)}</Text>
+
+        <TouchableOpacity
+          onPress={() =>
+            !isSameDay(currentDate, systemDate) && handleDateChange("next")
+          }
+        >
           <View>
-            <Image
-              source={require("../assets/rightarrow.png")}
-              style={styles.buttonImage}
-            />
+            {!isSameDay(currentDate, systemDate) && (
+              <Image
+                source={require("../assets/rightarrow.png")}
+                style={styles.buttonImage}
+              />
+            )}
           </View>
         </TouchableOpacity>
       </View>
       <View style={styles.statscontainer}>
         <View style={styles.statscharts}>
-          <StatsChart currentDate={currentDate} />
+          <StatsChart currentData={currentData} />
         </View>
-        <Text style={styles.h3}>You go to most classes on Tuesday's</Text>
+        <Text style={styles.h3}>
+          You go to most classes on {getDayWithHighestValue()}'s
+        </Text>
         {/* <View style={[styles.stats, { marginTop: 20 }]} /> */}
         <View style={[styles.statscharts, { marginTop: 20 }]}>
-          <StatsRing currentDate={currentDate} />
+          <StatsRing currentData={currentData} />
         </View>
+        <Text style={styles.h3}>
+          Weekly Attendance Rate:{" "}
+          {currentData.datasets[0].data.reduce((sum, value) => sum + value, 0) /
+            currentData.datasets[0].data.length}{" "}
+          %
+        </Text>
       </View>
     </View>
   );
@@ -150,7 +208,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 4,
-    paddingTop: 10,
+    // paddingTop: 10,
   },
   stats: {
     flex: 0.4,
@@ -165,7 +223,7 @@ const styles = StyleSheet.create({
   h3: {
     textAlign: "center",
     margin: 10,
-    fontFamily: "BeVietnamPro_400Regular",
+    // fontFamily: "BeVietnamPro_400Regular",
     color: "#2E2E30",
   },
 });

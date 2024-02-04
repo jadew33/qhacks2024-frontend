@@ -8,7 +8,7 @@ const CalendarScreen = ({ navigation }) => {
         style={{
           paddingTop: 40,
           fontSize: 24,
-          fontFamily: "BeVietnamPro_600SemiBold",
+          // fontFamily: "BeVietnamPro_600SemiBold",
         }}
       >
         Calendar

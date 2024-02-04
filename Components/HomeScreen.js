@@ -1,279 +1,21 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
-import { useState, useEffect, useRef } from "react";
+import { StyleSheet, Text, View, Image } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
 import * as Location from "expo-location";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import MapView, { Callout, Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import * as FileSystem from "expo-file-system";
-import { shareAsync } from "expo-sharing";
+import MapView, { Marker } from "react-native-maps";
 
-// let locationsOfInterest = [
-//   {
-//     title: "First",
-//     location: {
-//       latitude: -27.2,
-//       longitude: 145,
-//     },
-//     description: "My First Marker",
-//   },
-//   {
-//     title: "Second",
-//     location: {
-//       latitude: -30.2,
-//       longitude: 150,
-//     },
-//     description: "My Second Marker",
-//   },
-// ];
-
-// const mapJson = [
-//   {
-//     elementType: "geometry",
-//     stylers: [
-//       {
-//         color: "#212121",
-//       },
-//     ],
-//   },
-//   {
-//     elementType: "labels.icon",
-//     stylers: [
-//       {
-//         visibility: "off",
-//       },
-//     ],
-//   },
-//   {
-//     elementType: "labels.text.fill",
-//     stylers: [
-//       {
-//         color: "#757575",
-//       },
-//     ],
-//   },
-//   {
-//     elementType: "labels.text.stroke",
-//     stylers: [
-//       {
-//         color: "#212121",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "administrative",
-//     elementType: "geometry",
-//     stylers: [
-//       {
-//         color: "#757575",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "administrative.country",
-//     elementType: "labels.text.fill",
-//     stylers: [
-//       {
-//         color: "#9e9e9e",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "administrative.locality",
-//     elementType: "labels.text.fill",
-//     stylers: [
-//       {
-//         color: "#bdbdbd",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "poi",
-//     elementType: "labels.text.fill",
-//     stylers: [
-//       {
-//         color: "#757575",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "poi.park",
-//     elementType: "geometry",
-//     stylers: [
-//       {
-//         color: "#181818",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "poi.park",
-//     elementType: "labels.text.fill",
-//     stylers: [
-//       {
-//         color: "#616161",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "poi.park",
-//     elementType: "labels.text.stroke",
-//     stylers: [
-//       {
-//         color: "#1b1b1b",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "road",
-//     elementType: "geometry.fill",
-//     stylers: [
-//       {
-//         color: "#2c2c2c",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "road",
-//     elementType: "labels.text.fill",
-//     stylers: [
-//       {
-//         color: "#8a8a8a",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "road.arterial",
-//     elementType: "geometry",
-//     stylers: [
-//       {
-//         color: "#373737",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "road.highway",
-//     elementType: "geometry",
-//     stylers: [
-//       {
-//         color: "#3c3c3c",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "road.highway",
-//     elementType: "geometry.stroke",
-//     stylers: [
-//       {
-//         color: "#ffeb3b",
-//       },
-//       {
-//         weight: 3,
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "road.highway.controlled_access",
-//     elementType: "geometry",
-//     stylers: [
-//       {
-//         color: "#4e4e4e",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "road.local",
-//     elementType: "labels.text.fill",
-//     stylers: [
-//       {
-//         color: "#616161",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "transit",
-//     elementType: "labels.text.fill",
-//     stylers: [
-//       {
-//         color: "#757575",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "water",
-//     elementType: "geometry",
-//     stylers: [
-//       {
-//         color: "#000000",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "water",
-//     elementType: "geometry.fill",
-//     stylers: [
-//       {
-//         color: "#1f0038",
-//       },
-//     ],
-//   },
-//   {
-//     featureType: "water",
-//     elementType: "labels.text.fill",
-//     stylers: [
-//       {
-//         color: "#3d3d3d",
-//       },
-//     ],
-//   },
-// ];
-
-const HomeScreen = ({ navigation, data }) => {
-  const [location, setLocation] = useState();
-  const [count, setCount] = useState(0);
+const HomeScreen = ({ navigation, data, coins }) => {
+  const [mapRegion, setMapRegion] = useState({
+    latitude: 44.2207234,
+    longitude: -44.5232731,
+    latitudeDelta: 0.0001, // smaller value for more zoom
+    longitudeDelta: 0.0001, // smaller value for more zoom
+  });
 
   console.log(data);
 
-  const [draggableMarkerCoord, setDraggableMarkerCoord] = useState({
-    longitude: 148.11,
-    latitude: -26.85,
-  });
-  const mapRef = useRef();
-
-  const onRegionChange = (region) => {
-    console.log(region);
-  };
-
-  const showLocationsOfInterest = () => {
-    return locationsOfInterest.map((item, index) => {
-      return (
-        <Marker
-          key={index}
-          coordinate={item.location}
-          title={item.title}
-          description={item.description}
-        />
-      );
-    });
-  };
-
-  const takeSnapshotAndShare = async () => {
-    const snapshot = await mapRef.current.takeSnapshot({
-      width: 300,
-      height: 300,
-      result: "base64",
-    });
-    const uri = FileSystem.documentDirectory + "snapshot.png";
-    await FileSystem.writeAsStringAsync(uri, snapshot, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-    await shareAsync(uri);
-  };
-
   useEffect(() => {
-    console.log("reache");
-
     const getLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
 
@@ -282,64 +24,72 @@ const HomeScreen = ({ navigation, data }) => {
         return;
       }
 
-      let currentLocation = await Location.getCurrentPositionAsync({});
-      setLocation(currentLocation);
+      let currentLocation = await Location.getCurrentPositionAsync({
+        enableHighAccuracy: true,
+      });
       console.log(currentLocation);
+      setMapRegion({
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
     };
     getLocation();
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Hello, Kale</Text>
+      <View style={styles.absolute}>
+        <Text style={styles.header}>Hello, Kale</Text>
+        <View style={styles.pill}>
+          <Image
+            source={require("../assets/sun.png")}
+            style={styles.pillImage}
+          />
+          <Text style={styles.pillText}>{coins} </Text>
+        </View>
+      </View>
+
+      <Image
+        style={{ position: "absolute", top: 60, right: 30 }}
+        source={require("../assets/profile.png")}
+        // style={{ width: 50, height: 50 }}
+        // resizeMode="contain"
+      />
+
       <View style={styles.circle}>
-        <MapView style={styles.map}></MapView>
-      </View>
-      <Text>You are 35% done with your classes today!</Text>
-      <View>
-        <Text>Stats view here</Text>
-      </View>
-      {/* <MapView
-        provider={PROVIDER_GOOGLE}
-        ref={mapRef}
-        style={styles.map}
-        onRegionChange={onRegionChange}
-        initialRegion={{
-          latitude: -26.852691607783505,
-          latitudeDelta: 27.499085419977938,
-          longitude: 148.1104129487327,
-          longitudeDelta: 15.952148000000022,
-        }}
-        customMapStyle={mapJson}
-      >
-        {showLocationsOfInterest()}
-        <Marker
-          draggable
-          pinColor="#0000ff"
-          coordinate={draggableMarkerCoord}
-          onDragEnd={(e) => setDraggableMarkerCoord(e.nativeEvent.coordinate)}
-        />
-        <Marker
-          pinColor="#00ff00"
-          coordinate={{ latitude: -35, longitude: 147 }}
+        <MapView
+          region={mapRegion}
+          style={styles.map}
+          // scrollEnabled={false}
+          // zoomEnabled={false}
         >
-          <Callout>
-            <Text>Count: {count}</Text>
-            <Button
-              title="Increment Count"
-              onPress={() => setCount(count + 1)}
+          <Marker coordinate={mapRegion} title="Your Location">
+            <Image
+              source={require("../assets/mascot-orig.png")}
+              style={{ width: 50, height: 50 }}
+              resizeMode="contain"
             />
-            <Button
-              title="Take Snapshot and Share"
-              onPress={takeSnapshotAndShare}
-            />
-          </Callout>
-        </Marker>
-        <Text style={styles.mapOverlay}>
-          Longitude: {draggableMarkerCoord.longitude}, latitude:{" "}
-          {draggableMarkerCoord.latitude}
-        </Text>
-      </MapView> */}
+          </Marker>
+        </MapView>
+      </View>
+      <Text style={styles.goalText}>
+        Congrats! You attended all of your classes today!
+      </Text>
+      <View style={styles.streakContainer}>
+        <View>
+          <Image
+            source={require("../assets/sun.png")}
+            // style={{ width: 50, height: 50 }}
+            // resizeMode="contain"
+          />
+        </View>
+        <View style={styles.streakCircle} />
+        <View style={styles.streakCircle} />
+        <View style={styles.streakCircle} />
+        <View style={styles.streakCircle} />
+      </View>
       <StatusBar style="auto" />
     </View>
   );
@@ -348,31 +98,102 @@ const HomeScreen = ({ navigation, data }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
+    paddingVertical: 40,
+  },
+  absolute: {
+    position: "absolute",
+    top: 65,
+    left: 25,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
   },
   circle: {
-    width: 300, // or whatever size you want
-    height: 300, // should match width for a perfect circle
+    width: 250, // or whatever size you want
+    height: 250, // should match width for a perfect circle
     borderRadius: 150, // half of your width and height
     overflow: "hidden", // to ensure the corners are not visible
+    marginTop: 130,
+    borderColor: "#F89364",
+    borderStyle: "solid",
+    borderWidth: 5,
+    position: "relative",
   },
   map: {
-    // width: "90%",
-    // height: "30%",
+    width: "100%",
+    height: "100%",
     ...StyleSheet.absoluteFillObject, // to ensure the map takes the full space of the parent View
   },
-  mapOverlay: {
-    position: "absolute",
-    bottom: 50,
-    backgroundColor: "#ffffff",
-    borderWidth: 2,
-    borderRadius: 5,
-    padding: 16,
-    left: "25%",
-    width: "50%",
+  pillImage: {
+    width: 16,
+    height: 16,
+    marginRight: 5,
+  },
+  goalText: {
+    // marginTop: 40,
     textAlign: "center",
+    fontSize: 16,
+    width: 250,
+  },
+  pill: {
+    // backgroundColor: "#dbe4cf",
+    backgroundColor: "white",
+    borderRadius: 32,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 4,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderRadius: 50,
+    marginTop: 15,
+    width: 80,
+    // position: "absolute",
+  },
+  pillText: {
+    // color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  streakContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: 100,
+    alignSelf: "center",
+    // marginTop: 40,
+
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    width: 250,
+
+    backgroundColor: "white",
+    borderRadius: 32,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  streakCircle: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    marginTop: 5,
+    borderColor: "#fff48f",
+  },
+  streakCircleFilled: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: "#7C9661",
   },
 });
 
