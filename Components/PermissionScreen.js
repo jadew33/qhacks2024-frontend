@@ -7,10 +7,13 @@ const PermissionScreen = ({ navigation }) => {
       <View style={styles.stats}>
         {/* Your content goes here */}
         <Text style={styles.h3}>In order to properly track your attendance, please allow ---- to access your location</Text>
+        <View style={styles.innerBox}>
+          {/* Content of the inner box goes here */}
+          <Text style={styles.h1}>Allow</Text>
+          <Text style={styles.h2}>Don't Allow</Text>
+        </View>
         <View style={styles.line}></View>
         <View style={styles.line2}></View>
-        <Text style={styles.h1}>Allow</Text>
-        <Text style={styles.h2}>Don't Allow</Text>
       </View>
     </View>
   );
@@ -35,6 +38,16 @@ const styles = StyleSheet.create({
     padding: 16,
   },
 
+  innerBox: {
+    width: 270,
+    height: 200,
+    borderColor: "gray", // Gray outline color
+    borderWidth: 1, // Outline width
+    flexDirection: "row", // Arrange items in a row
+    justifyContent: "space-around", // Align items with space around
+    marginTop: 40,
+  },
+
   h3: {
     textAlign: "center",
     marginTop: 15,
@@ -44,16 +57,18 @@ const styles = StyleSheet.create({
 
   h2: {
     textAlign: "center",
-    left: "23%", // Center horizontally
-    top: "-11%", // Center vertically
     fontSize: 25,
+    marginTop: 15,
+    left: "-25%", // Center horizontally
+    top: "50%", // Center vertically
   },
 
   h1: {
     textAlign: "center",
+    fontSize: 25,
+    marginTop: 110,
     left: "-28%", // Center horizontally
     top: "7%", // Center vertically
-    fontSize: 25,
   },
 
   line: {
