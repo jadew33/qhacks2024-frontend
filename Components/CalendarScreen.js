@@ -133,7 +133,7 @@ const CalendarScreen = ({ navigation }) => {
                 <Text
                   style={{
                     fontSize: 20,
-                    fontFamily: "AzeretMono_400Regular",
+                    // fontFamily: "AzeretMono_400Regular",
                   }}
                 >
                   {selected}
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     marginTop: 15,
-    marginHorizontal:10
+    marginHorizontal: 10,
   },
   class: {},
   dateTime: {

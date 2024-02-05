@@ -23,7 +23,7 @@ import CustomizeIconActive from "./assets/customize-active.png";
 
 export default function App() {
   const [data, setData] = useState(null);
-  const [coins, setCoins] = useState(100);
+  const [coins, setCoins] = useState(50);
   const [closet, setCloset] = useState([]);
   const [avatar, setAvatar] = useState(require("./assets/mascot-orig.png"));
 
